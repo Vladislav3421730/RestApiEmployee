@@ -60,7 +60,7 @@ public class MyRESTController {
     public List<Employee> GetAllEmployeeBySalaryIsBetween(@PathVariable int salary1,@PathVariable int salary2)
     {
         List<Employee> list=employeeService.findAllBySalaryIsBetween(salary1,salary2);
-        if(list.size()==0) throw new NoSuchEmployeeException("Нет работников с таким диапазоном зарплат");
+        if(list.isEmpty()) throw new NoSuchEmployeeException("Нет работников с таким диапазоном зарплат");
         return list;
     }
 

@@ -1,8 +1,6 @@
 package com.zaurtregulov.spring.springboot.spring_data_jpa.Controller;
 
 import com.zaurtregulov.spring.springboot.spring_data_jpa.entity.Employee;
-import com.zaurtregulov.spring.springboot.spring_data_jpa.exception_handling.EmployeeIncorrectData;
-import com.zaurtregulov.spring.springboot.spring_data_jpa.exception_handling.NoSuchEmployeeException;
 import com.zaurtregulov.spring.springboot.spring_data_jpa.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,23 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class MyRESTController {
 
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/emp")
+    @GetMapping(value = "/emp")
     public List<Employee> showAllEmployees()
     {
-        List<Employee> allEmployees=employeeService.getAllEmployees();
-        return  allEmployees;
+        return employeeService.getAllEmployees();
     }
     @GetMapping("/emp/{id}")
     public Employee GetEmployee(@PathVariable int id)
     {
-        Employee employee=employeeService.getEmployee(id);
-        if(employee==null) throw new NoSuchEmployeeException("Employee with id"+id+"not found");
-        return  employee;
+        return employeeService.getEmployee(id);
     }
 
     @PostMapping("/emp")
@@ -41,27 +37,23 @@ public class MyRESTController {
         employeeService.saveEmployee(employee);
         return employee;
     }
-    @DeleteMapping("/emp/{id}")
+    @DeleteMapping(value = "/emp/{id}",produces="application/json" )
     public String deleteEmployee(@PathVariable int id)
     {
-        Employee employee=employeeService.getEmployee(id);
-        if(employee==null) throw new NoSuchEmployeeException("Employee with id"+id+"not found");
+        employeeService.getEmployee(id);
         employeeService.deleteEmployee(id);
-        return "Employee with id "+id+" was deleted";
+        return "{\"info\": \"Employee with id "+id+" was deleted\"}";
     }
     @GetMapping("/emp/name/{name}")
-    public  List<Employee> GetAllEmployeeByName(@PathVariable String name)
+    public List<Employee> GetAllEmployeeByName(@PathVariable String name)
     {
-        List<Employee> list=employeeService.findAllByName(name);
-        return  list;
+       return employeeService.findAllByName(name);
     }
 
     @GetMapping("/emp/salary/{salary1}/{salary2}")
     public List<Employee> GetAllEmployeeBySalaryIsBetween(@PathVariable int salary1,@PathVariable int salary2)
     {
-        List<Employee> list=employeeService.findAllBySalaryIsBetween(salary1,salary2);
-        if(list.isEmpty()) throw new NoSuchEmployeeException("Нет работников с таким диапазоном зарплат");
-        return list;
+        return employeeService.findAllBySalaryIsBetween(salary1,salary2);
     }
 
 }

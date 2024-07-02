@@ -14,7 +14,7 @@ public class ControllerException {
     @ExceptionHandler
     public ResponseEntity<EmployeeIncorrectData> handleException(NoSuchEmployeeException exception) {
         EmployeeIncorrectData employeeIncorrectData = new EmployeeIncorrectData();
-        employeeIncorrectData.setInfo(exception.getMessage());
+        employeeIncorrectData.setMessage(exception.getMessage());
         return new ResponseEntity<>(employeeIncorrectData, HttpStatus.NOT_FOUND);
     }
 }

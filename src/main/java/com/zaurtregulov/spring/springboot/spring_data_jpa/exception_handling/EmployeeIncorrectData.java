@@ -1,14 +1,14 @@
 package com.zaurtregulov.spring.springboot.spring_data_jpa.exception_handling;
 
 public class EmployeeIncorrectData {
-    private String Info;
+    private String message;
 
     public String getInfo() {
-        return Info;
+        return message;
     }
 
-    public void setInfo(String info) {
-        Info = info;
+    public void setMessage(String message) {
+        this.message = message ;
     }
 
     public EmployeeIncorrectData() {

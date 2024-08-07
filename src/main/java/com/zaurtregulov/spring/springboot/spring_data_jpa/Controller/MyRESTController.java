@@ -2,17 +2,18 @@ package com.zaurtregulov.spring.springboot.spring_data_jpa.Controller;
 
 import com.zaurtregulov.spring.springboot.spring_data_jpa.entity.Employee;
 import com.zaurtregulov.spring.springboot.spring_data_jpa.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class MyRESTController {
 
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @GetMapping(value = "/emp")
     public List<Employee> showAllEmployees()
@@ -25,17 +26,16 @@ public class MyRESTController {
         return employeeService.getEmployee(id);
     }
 
-    @PostMapping("/emp")
-    public Employee addEmployee(@RequestBody Employee employee)
+    @PostMapping(value="/emp",consumes="application/json",produces="application/json" )
+    public Employee addEmployee(@RequestBody @Valid Employee employee)
     {
-        employeeService.saveEmployee(employee);
-        return employee;
+       return employeeService.saveEmployee(employee);
     }
-   @PutMapping("/emp")
-    public Employee updateEmployee(@RequestBody Employee employee)
+   @PutMapping(value="/emp",consumes="application/json",produces="application/json" )
+    public Employee updateEmployee(@RequestBody @Valid Employee employee)
     {
-        employeeService.saveEmployee(employee);
-        return employee;
+       return employeeService.updateEmployee(employee);
+
     }
     @DeleteMapping(value = "/emp/{id}",produces="application/json" )
     public String deleteEmployee(@PathVariable int id)
